@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Final_GameplayDB</string>
+    <string name="chooseDiffTxt">Choose difficulty</string>
+    <string name="easyTxt">Easy</string>
+    <string name="averageTxt">Average</string>
+    <string name="diffTxt">Difficult</string>
+</resources>

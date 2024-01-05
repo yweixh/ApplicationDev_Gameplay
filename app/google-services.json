@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134146915100",
+    "project_id": "final-gameplaydb",
+    "storage_bucket": "final-gameplaydb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134146915100:android:50acf0faa4027b678c98d9",
+        "android_client_info": {
+          "package_name": "com.example.final_gameplaydb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ6ZL48b5IX1_hIxZAapZuCOmwd0m23aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
