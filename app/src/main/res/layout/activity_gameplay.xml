@@ -13,14 +13,14 @@
         android:outlineSpotShadowColor="@color/black"
         android:alpha="0.5"/>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/Labels">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
             android:fontFamily="@font/interphases_medium"
             android:textColor="@color/font_color"
             android:textSize="23dp"
@@ -28,19 +28,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="150dp"
             android:fontFamily="@font/interphases_medium"
             android:textColor="@color/font_color"
             android:textSize="23dp"
             android:text="Time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:fontFamily="@font/interphases_medium"
-            android:textColor="@color/font_color"
-            android:textSize="23dp"
-            android:text="Score"/>
     </LinearLayout>
 
     <TextView
@@ -49,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Labels"
         android:fontFamily="@font/interphases_medium"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="85dp"
         android:text="0"
         android:textSize="50dp"
         android:textColor="@color/font_color"/>
@@ -59,28 +51,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Labels"
         android:fontFamily="@font/interphases_medium"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="300dp"
         android:text="0"
         android:textSize="50dp"
         android:textColor="@color/font_color"/>
-    <TextView
-        android:id="@+id/ScoreNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Labels"
-        android:fontFamily="@font/interphases_medium"
-        android:layout_marginLeft="333dp"
-        android:text="0"
-        android:textSize="50dp"
-        android:textColor="@color/font_color"/>
-
     <TextView
         android:id="@+id/Question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="260dp"
-        android:text="question"
+        android:text=""
         android:textSize="45sp"
         android:textColor="@color/font_color"
         android:fontFamily="@font/interphases_medium"/>
@@ -93,7 +74,6 @@
         android:orientation="vertical">
         <Button
             android:id="@+id/FirstChoice"
-            android:text="A"
             android:textSize="18dp"
             android:layout_marginTop="50dp"
             android:layout_width="285dp"
@@ -104,7 +84,6 @@
             android:fontFamily="@font/interphases_medium"/>
         <Button
             android:id="@+id/SecondChoice"
-            android:text="B"
             android:textSize="18sp"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
@@ -114,7 +93,6 @@
             android:fontFamily="@font/interphases_medium"/>
         <Button
             android:id="@+id/ThirdChoice"
-            android:text="C"
             android:textSize="18sp"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
@@ -124,7 +102,6 @@
             android:fontFamily="@font/interphases_medium"/>
         <Button
             android:id="@+id/FourthChoice"
-            android:text="D"
             android:textSize="18sp"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
@@ -133,5 +110,4 @@
             android:background="@drawable/button"
             android:fontFamily="@font/interphases_medium"/>
     </LinearLayout>
-
 </RelativeLayout>

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.final_gameplaydb.Model.Question;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +39,7 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
     int currentQuestionCount = 0;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,6 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
         question = findViewById(R.id.Question);
         questionCount = findViewById(R.id.QuestionNum);
         timerNum = findViewById(R.id.TimerNum);
-
 
         first = findViewById(R.id.FirstChoice);
         second = findViewById(R.id.SecondChoice);
@@ -61,7 +60,6 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
         fourth.setOnClickListener(this);
 
         getQuestionsList();
-
 
         countDown = new CountDownTimer(60000, 1000) {
             @Override
@@ -82,6 +80,7 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
 
             }
         }.start();
+
     }
 
     private void getQuestionsList() {
@@ -109,8 +108,6 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
 
                     } else {
                         Log.e("FirestoreError", "Error getting documents: ", task.getException());
-                        task.getException().printStackTrace();
-                        Toast.makeText(EasyGameplay.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -158,14 +155,14 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
         Button selectedButton = (Button) view;
         Question currentQuestion = questionList.get(questionNum);
 
-        if (currentQuestion.getCorrectAns().equals(selectedButton.getText())) {
+        if (currentQuestion.getCorrectAns().contentEquals(selectedButton.getText())) {
             scoreNum++;
 
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
 
         } else {
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            
+
         }
 
         // Print the correct answer to the console for debugging
@@ -184,7 +181,7 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
             answer = String.valueOf(currentQuestion.getCorrectAns());
 
             changeQuestion();
-        }, 0500);
+        }, 500);
     }
 
     private void changeQuestion() {
