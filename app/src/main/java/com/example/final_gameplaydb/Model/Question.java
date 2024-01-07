@@ -7,18 +7,18 @@ public class Question {
     String optionB;
     String optionC;
     String optionD;
+    String correctAns;
 
 
-    public Question() {
 
-    }
 
-    public Question(String question, String optionA, String optionB, String optionC, String optionD) {
+    public Question(String question, String optionA, String optionB, String optionC, String optionD, String correctAns) {
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
+        this.correctAns = correctAns;
 
     }
 
@@ -61,6 +61,18 @@ public class Question {
 
     public void setOptionD(String optionD) {
         this.optionD = optionD;
+    }
+
+    public String getCorrectAns() {
+        return correctAns;
+    }
+
+    public void setCorrectAns(String correctAns) {
+        this.correctAns = correctAns;
+    }
+
+    public Question() {
+
     }
 
 }

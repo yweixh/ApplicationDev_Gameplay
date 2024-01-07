@@ -63,7 +63,6 @@ public class HardGameplay extends AppCompatActivity implements View.OnClickListe
 
         getQuestionsList();
 
-
         countDown = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -87,7 +86,7 @@ public class HardGameplay extends AppCompatActivity implements View.OnClickListe
 
     private void getQuestionsList() {
         questionList = new ArrayList<>();
-        String selectedDifficulty = "Hard";
+        String selectedDifficulty = "Average";
 
         firestore.collection("Difficulties").document(selectedDifficulty).collection("questions")
                 .get().addOnCompleteListener((OnCompleteListener<QuerySnapshot>) task -> {
@@ -156,8 +155,9 @@ public class HardGameplay extends AppCompatActivity implements View.OnClickListe
 
     private void checkAnswer(String selectChoice, View view) {
         Button selectedButton = (Button) view;
+        Question currentQuestion = questionList.get(questionNum);
 
-        if (selectChoice.equals(selectedButton.getText())) {
+        if (selectChoice.trim().equalsIgnoreCase(String.valueOf(currentQuestion.getCorrectAns()))) {
             // right answer
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
             scoreNum++;
@@ -165,39 +165,38 @@ public class HardGameplay extends AppCompatActivity implements View.OnClickListe
             // wrong answer
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             // Set the background tint of the correct answer to green
-            /**switch (questionList.get(questionNum).getCorrectAns()) {
-             case "A":
-             first.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "B":
-             second.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "C":
-             third.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "D":
-             fourth.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             }**/
+            switch (currentQuestion.getCorrectAns()) {
+                case "A":
+                    first.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "B":
+                    second.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "C":
+                    third.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "D":
+                    fourth.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+            }
         }
 
-        // Delay for 1000 milliseconds before changing the question
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                selectedButton.setEnabled(true);
+        // Print the correct answer to the console for debugging
+        Log.d("CorrectAnswer", "Correct Answer: " + currentQuestion.getCorrectAns());
 
-                // Reset background tint of all buttons before changing the question
-                selectedButton.setBackgroundTintList(null);
-                first.setBackgroundTintList(null);
-                second.setBackgroundTintList(null);
-                third.setBackgroundTintList(null);
-                fourth.setBackgroundTintList(null);
+        new Handler().postDelayed(() -> {
+            selectedButton.setEnabled(true);
 
-                answer = questionList.get(0).getCorrectAns();
+            // Reset background tint of all buttons before changing the question
+            selectedButton.setBackgroundTintList(null);
+            first.setBackgroundTintList(null);
+            second.setBackgroundTintList(null);
+            third.setBackgroundTintList(null);
+            fourth.setBackgroundTintList(null);
 
-                changeQuestion();
-            }
+            answer = String.valueOf(currentQuestion.getCorrectAns());
+
+            changeQuestion();
         }, 0500);
     }
 
@@ -218,9 +217,9 @@ public class HardGameplay extends AppCompatActivity implements View.OnClickListe
             // go to score activity
             Intent intent = new Intent(HardGameplay.this, ScoreActivity.class);
             intent.putExtra("SCORE", scoreNum); // Pass the score here
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+            quizEnded = true;
         }
     }
 

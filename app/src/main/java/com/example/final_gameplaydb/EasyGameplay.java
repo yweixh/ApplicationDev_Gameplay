@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.final_gameplaydb.Adapter.GameplayAdapter;
 import com.example.final_gameplaydb.Model.Question;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,18 +28,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class EasyGameplay extends AppCompatActivity implements View.OnClickListener {
-    TextView question;
-    TextView timerNum;
-    TextView questionCount;
+    TextView question, timerNum, questionCount;
     String answer = "";
-    int scoreNum;
+    int scoreNum, questionNum;
     Button first, second, third, fourth;
     List<Question> questionList;
-    int questionNum;
     CountDownTimer countDown;
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     boolean quizEnded = false;
-    GameplayAdapter adapter;
+    static final int Question_Limit = 5;
+    int currentQuestionCount = 0;
 
 
     @Override
@@ -64,11 +61,6 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
         fourth.setOnClickListener(this);
 
         getQuestionsList();
-
-        adapter = new GameplayAdapter(EasyGameplay.this, questionList);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView); // Assuming you have a RecyclerView in your layout
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
 
 
         countDown = new CountDownTimer(60000, 1000) {
@@ -136,6 +128,7 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
             questionCount.setText(String.valueOf(1));
 
             questionNum = 0;
+            currentQuestionCount = 0;
         } else {
             // Handle the case when questionList is empty (e.g., show an error message or log)
             Log.e("GameplayActivity", "Question list is empty");
@@ -164,37 +157,20 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
     private void checkAnswer(String selectChoice, View view) {
         Button selectedButton = (Button) view;
         Question currentQuestion = questionList.get(questionNum);
-        String correctAnswer = currentQuestion.getCorrectAns();
 
-        if (selectChoice.trim().equalsIgnoreCase(correctAnswer)) {
-                // right answer
-                selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                scoreNum++;
+        if (currentQuestion.getCorrectAns().equals(selectedButton.getText())) {
+            scoreNum++;
+
+            selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+
         } else {
-            // wrong answer
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            // Set the background tint of the correct answer to green
-            switch (correctAnswer) {
-                case "A":
-                    first.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                    break;
-                case "B":
-                    second.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                    break;
-                case "C":
-                    third.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                    break;
-                case "D":
-                    fourth.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                    break;
-            }
+            
         }
 
-
         // Print the correct answer to the console for debugging
-        Log.d("CorrectAnswer", "Correct Answer: " + correctAnswer);
+        Log.d("CorrectAnswer", "Correct Answer: " + currentQuestion.getCorrectAns());
 
-        // Delay for 1000 milliseconds before changing the question
         new Handler().postDelayed(() -> {
             selectedButton.setEnabled(true);
 
@@ -205,14 +181,15 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
             third.setBackgroundTintList(null);
             fourth.setBackgroundTintList(null);
 
-            answer = correctAnswer;  // Use correctAnswer instead of retrieving it again
+            answer = String.valueOf(currentQuestion.getCorrectAns());
 
             changeQuestion();
-        }, 1000);
+        }, 0500);
     }
 
     private void changeQuestion() {
-        if (questionNum < questionList.size() - 1) {
+        if (currentQuestionCount < Question_Limit - 1) {  // Check if the question limit is reached
+            currentQuestionCount++;
             questionNum++;
 
             playAnim(question, 0, 0);
@@ -228,9 +205,9 @@ public class EasyGameplay extends AppCompatActivity implements View.OnClickListe
             // go to score activity
             Intent intent = new Intent(EasyGameplay.this, ScoreActivity.class);
             intent.putExtra("SCORE", scoreNum); // Pass the score here
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+            quizEnded = true;
         }
     }
 

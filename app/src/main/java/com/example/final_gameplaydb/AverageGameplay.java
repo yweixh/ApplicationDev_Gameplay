@@ -64,6 +64,8 @@ public class AverageGameplay extends AppCompatActivity implements View.OnClickLi
         getQuestionsList();
 
 
+
+
         countDown = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -131,13 +133,14 @@ public class AverageGameplay extends AppCompatActivity implements View.OnClickLi
             questionNum = 0;
         } else {
             // Handle the case when questionList is empty (e.g., show an error message or log)
-            Log.e("AverageGameplay", "Question list is empty");
+            Log.e("GameplayActivity", "Question list is empty");
             // You might want to return from the method or take appropriate action.
         }
 
     }
 
     @SuppressLint("NonConstantResourceId")
+    @Override
     public void onClick(View v) {
         String selectChoice = "";
 
@@ -155,8 +158,9 @@ public class AverageGameplay extends AppCompatActivity implements View.OnClickLi
 
     private void checkAnswer(String selectChoice, View view) {
         Button selectedButton = (Button) view;
+        Question currentQuestion = questionList.get(questionNum);
 
-        if (selectChoice.trim().equalsIgnoreCase(selectedButton.getText().toString().trim())) {
+        if (selectChoice.trim().equalsIgnoreCase(String.valueOf(currentQuestion.getCorrectAns()))) {
             // right answer
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
             scoreNum++;
@@ -164,39 +168,38 @@ public class AverageGameplay extends AppCompatActivity implements View.OnClickLi
             // wrong answer
             selectedButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             // Set the background tint of the correct answer to green
-            /**switch (questionList.get(questionNum).getCorrectAns()) {
-             case "A":
-             first.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "B":
-             second.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "C":
-             third.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             case "D":
-             fourth.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-             break;
-             }**/
+            switch (currentQuestion.getCorrectAns()) {
+                case "A":
+                    first.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "B":
+                    second.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "C":
+                    third.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+                case "D":
+                    fourth.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                    break;
+            }
         }
 
-        // Delay for 1000 milliseconds before changing the question
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                selectedButton.setEnabled(true);
+        // Print the correct answer to the console for debugging
+        Log.d("CorrectAnswer", "Correct Answer: " + currentQuestion.getCorrectAns());
 
-                // Reset background tint of all buttons before changing the question
-                selectedButton.setBackgroundTintList(null);
-                first.setBackgroundTintList(null);
-                second.setBackgroundTintList(null);
-                third.setBackgroundTintList(null);
-                fourth.setBackgroundTintList(null);
+        new Handler().postDelayed(() -> {
+            selectedButton.setEnabled(true);
 
-                answer = questionList.get(0).getCorrectAns();
+            // Reset background tint of all buttons before changing the question
+            selectedButton.setBackgroundTintList(null);
+            first.setBackgroundTintList(null);
+            second.setBackgroundTintList(null);
+            third.setBackgroundTintList(null);
+            fourth.setBackgroundTintList(null);
 
-                changeQuestion();
-            }
+            answer = String.valueOf(currentQuestion.getCorrectAns());
+
+            changeQuestion();
         }, 0500);
     }
 
